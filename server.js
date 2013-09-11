@@ -3,6 +3,7 @@
 var restify = require('restify');
 var    path = require('path');
 var      fs = require('fs');
+var  crypto = require('crypto');
 
 /* read in configuration */
 var config = require('./config');
@@ -24,7 +25,7 @@ function process_manifest(req, uuid) {
 	var manifest;
 	try {
 		manifest = require(path.join(serve_dir, uuid + '/manifest'));
-		var url_prefix = config.prefix + req.header('Host') + config.suffix + "/datasets/" + uuid + "/";
+		var url_prefix = config.prefix + req.header('Host') + config.suffix + "/images/" + uuid + "/";
 		for (entry in manifest.files) {
 			manifest.files[entry].url = url_prefix + manifest.files[entry].path
 		};
@@ -80,6 +81,7 @@ function manifest(req, res, next) {
  * Serve up the requested image file
  */
 function imagefile(req, res, next) {
+
 	var filename = path.join(serve_dir, req.params.id + '/file');
 	req.log.info("serving up /datasets/" + req.params.id + '/file');
 	fs.exists(filename, function (exists) {
@@ -89,8 +91,17 @@ function imagefile(req, res, next) {
 		} else {
 			res.header("Content-Type", "application/octet-stream");
 			res.header("Content-Length", fs.statSync(filename).size);
-			var stream = fs.createReadStream(filename, { bufferSize: 64 * 1024 });
-			stream.pipe(res);
+                        var md5 = crypto.createHash('md5');
+			var s = fs.createReadStream(filename, { bufferSize: 64 * 1024 });
+                        s.on('data', function(d) {
+                          md5.update(d);
+                        });
+                        s.on('end', function() {
+  console.log('ENDED');
+                          var d = md5.digest('hex');
+                          res.header('Content-MD5', d);
+                          fs.createReadStream(filename, { bufferSize: 64 * 1024 }).pipe(res);
+                        });
 		}
 	});
 	return next();
@@ -140,7 +151,7 @@ var server = restify.createServer();
 
 setup_routes(server, '/images', alldatasets);
 setup_routes(server, '/images/:id', manifest);
-setup_routes(server, '/datasets/:id/file', imagefile);
+setup_routes(server, '/images/:id/file', imagefile);
 setup_routes(server, '/ping', ping);
 setup_routes(server, '/', slash);
 
