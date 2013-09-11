@@ -122,7 +122,7 @@ smartos-image-server/
   import-image
 	<uuid>/
 		manifest.json
-		<zfs-stream-file>.<extension>
+		file
 ```
 
 # Requirements
