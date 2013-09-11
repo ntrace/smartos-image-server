@@ -7,7 +7,7 @@
   }
   , "repository" : {
        "type" : "git"
-      ,"url" : "https://github.com/nshalman/smartos-image-server"
+      ,"url" : "https://github.com/pgte/smartos-image-server"
   }
   , "dependencies": {
       "restify": "~2.0.0"
@@ -18,8 +18,5 @@
   ,"engine" : {
       "node" : ">=0.8.0"
   }
-  ,"author" : {"name" : "Nahum Shalman", "email" : "" }
-  ,"contributors" :[
-      { "name" : "Jason Pincin", "email" : "jason@pincin.com" }
-  ]
+  ,"author" : {"name" : "Pedro Teixeira", "email" : "" }
 }
