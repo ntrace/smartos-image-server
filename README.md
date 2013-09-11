@@ -7,7 +7,7 @@ bare minimum image server for SmartOS
 
 ```
 pkgin in nodejs scmgit
-git clone https://github.com/pgte/smartos-image-server
+git clone https://github.com/ntrace/smartos-image-server
 cd smartos-image-server
 make
 ```
@@ -25,10 +25,10 @@ config.json:
 
 ``` json
 {
-	"listen_port": "/var/tmp/image-server.sock",
-	"prefix": "http://",
-	"suffix": "",
-	"loglevel": "info",
+  "listen_port": "/var/tmp/image-server.sock",
+  "prefix": "http://",
+  "suffix": "",
+  "loglevel": "info",
   "image-creator": "internal",
   "image-creator-uuid": "...",
   "image-vendor-uuid": "..."
