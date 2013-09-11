@@ -98,7 +98,7 @@ function imagefile(req, res, next) {
                         });
                         s.on('end', function() {
   console.log('ENDED');
-                          var d = md5.digest('hex');
+                          var d = md5.digest('base64');
                           res.header('Content-MD5', d);
                           fs.createReadStream(filename, { bufferSize: 64 * 1024 }).pipe(res);
                         });
